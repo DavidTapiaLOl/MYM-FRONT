@@ -1,0 +1,27 @@
+<section>
+  <div class="login">
+      <img src="assets/fondo.png" alt="Logo" />
+      <form [formGroup]="Formulario" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline">
+          <mat-label>Usuario</mat-label>
+          <input
+            matInput
+            formControlName="usuario"
+            type="text"
+            id="usuario"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Contraseña</mat-label>
+          <input matInput [type]="hide ? 'password' : 'text'" type="password" id="passsword" formControlName="password">
+          <div mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </div>
+        </mat-form-field>
+        <button type="submit">Entrar</button>
+        <div class="registro">
+          <a routerLink="/registro">Registrarse</a>
+        </div>
+      </form>
+    </div>
+</section>

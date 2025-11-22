@@ -1,0 +1,79 @@
+<!-- <img src="assets/registro.png" alt="fondo"> -->
+<section>
+  <!-- <img src="assets/fondo.png" alt=""> -->
+  <div class="formulario">
+    <form [ngClass]="layout.grid(sc)" #sc  [formGroup]="Formulario"  (ngSubmit)="submit()">
+       <mat-form-field appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input matInput type="text" id="nombre" formControlName="nombre" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Apellido Paterno</mat-label>
+        <input matInput type="text" id="apellido_paterno" formControlName="apellido_paterno" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Apellido Materno</mat-label>
+        <input matInput type="text" id="apellido_materno" formControlName="apellido_materno" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha de Nacimiento</mat-label>
+        <input matInput type="date" id="fecha_nacimiento" formControlName="fecha_nacimiento" required/>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Correo</mat-label>
+        <input matInput type="email" id="correo" formControlName="correo" required/>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Telefono</mat-label>
+        <input matInput type="tel" id="telefono" formControlName="telefono" required/>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Usuario</mat-label>
+        <input matInput type="text" id="usuario" formControlName="usuario" required/>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" id="password" formControlName="password"  required/>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Pais</mat-label>
+          <mat-select name="tbl_pais_id" id="pais" formControlName="tbl_pais_id">
+            @for (pais of listas?.['pais']; track $index) {
+              <mat-option [value]="pais.id">{{pais.nombre}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+
+      <mat-form-field appearance="outline">
+        <mat-label>Estado</mat-label>
+          <mat-select name="tbl_estado_id" id="estado" formControlName="tbl_estado_id">
+            @for (estado of listas?.['estado']; track $index) {
+              <mat-option [value]="estado.id">{{estado.nombre}}</mat-option>
+            }
+          </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Municipio</mat-label>
+          <mat-select name="tbl_municipio_id" id="municipio" formControlName="tbl_municipio_id">
+            @for (municipio of listas?.['municipio']; track $index) {
+              <mat-option [value]="municipio.id">{{municipio.nombre}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+      <button type="submit" >Guardar</button>
+    </form>
+  </div>
+</section>
+
+

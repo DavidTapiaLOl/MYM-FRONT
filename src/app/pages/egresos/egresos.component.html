@@ -1,0 +1,8 @@
+
+  <section>
+    <div class="egreso">
+      <button  (click)="Editardialog()">Agregar {{ruta=='egreso'?'Egreso': 'Ingreso'}}</button>
+    </div>
+    <ui-table (eliminar)="eliminar($event)" [data]='data' (clicktabla)="Editardialog($event)"></ui-table>
+  </section>
+

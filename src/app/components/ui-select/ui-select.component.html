@@ -1,0 +1,17 @@
+@defer (on viewport) {
+   <mat-form-field class="ui-select" [appearance]="_layout.appearance">
+      <mat-label>{{ _label }}</mat-label>
+      <mat-select [formControl]="_control" (valueChange)="select($event)">
+         <input matInput type="text" (keyup)="find(query.value)" #query class="ui-search" /> <!-- Campo de búsqueda -->
+         <!-- Generación dinámica de opciones filtradas por el valor de búsqueda -->
+         @for (el of _filtered_data; track $index) {
+            <mat-option [value]="el?.value ?? el">{{ el?.name ?? el }}</mat-option>
+         } @empty {
+            No hay registros que coincidan con "{{ query.value }}"
+         }
+      </mat-select>
+   </mat-form-field>
+
+} @placeholder {
+<div class="file-field big"></div>
+}

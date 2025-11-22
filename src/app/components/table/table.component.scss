@@ -1,0 +1,27 @@
+.data{
+  width: 320px;
+  margin: auto;
+  padding: 16px;
+}
+.noInfo{
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  font-size: 18px;
+  font-weight: 500;
+  gap: 16px;
+  button{
+    background-color: #126AD1;
+  color: white;
+  border: none;
+  padding: 5px 20px;
+  font-size: 14pt;
+  cursor: pointer;
+  width: 250px;
+  height: 50px;
+  border-radius: 10px;
+  margin: auto;
+  }
+
+
+}

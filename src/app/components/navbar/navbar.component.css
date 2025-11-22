@@ -1,0 +1,38 @@
+.navbar{
+  background-color: #5CAFA0;
+}
+
+button{
+  display: flex;
+  gap: 16px;
+  justify-content:flex-start;
+  align-items: center;
+  svg{
+    color: white;
+    background-color: #2e6643;
+    border-radius: 50%;
+    padding: 8px;
+  }
+  font-weight: 500;
+  font-size: 18px;
+}
+.nav{
+  display: flex;
+  gap: 16px;
+}
+
+.nav-link{
+  font-weight: 500;
+  font-size: 18px;
+  background:#D4DBE0;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: black;
+}
+.active{
+  background-color:#2e6643 ;
+  color: white;
+}
+
+
+

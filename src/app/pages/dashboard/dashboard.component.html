@@ -1,0 +1,12 @@
+<section>
+  <div class="sumascontainer">
+    <div class="egreso">-${{sumas?.egreso}}</div>
+    <div class="ingreso">${{sumas?.ingreso}}</div>
+  </div>
+  <h1>Ingresos conforme al tiempo</h1>
+  <bar-chart [data]="infoGrafica"></bar-chart>
+  <ui-table style="width: 100%;" (clicktabla)="click($event)" [data]="data"></ui-table>
+
+
+</section>
+

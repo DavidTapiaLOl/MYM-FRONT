@@ -1,0 +1,203 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { background: #BDDEC6 ; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline .mdc-notched-outline__notch{
+  border-right-width: 0 !important;
+}
+
+.ui-table{
+  background-color: white;
+  padding: 16px;
+  border-radius: 16px;
+
+}
+
+
+.mat-mdc-text-field-wrapper{
+  background:#d4dbe080 !important;
+}
+
+nav{
+  margin: 16px;
+  border-radius: 20px;
+
+}
+
+.ui-table{
+  width: 100% !important;
+  overflow: scroll;
+.table {
+  width: 100%;
+  overflow-x: scroll;
+
+}
+}
+
+.mat-mdc-dialog-content{
+  width: 80vw;
+}
+
+
+.grid {
+  display: grid;
+}
+.gap-x-6 {
+  column-gap: 16px ;
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0,1fr));
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0,1fr));
+}
+
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0,1fr));
+}
+
+
+
+@layer components {
+  .ui-big-title {
+     @apply text-3xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-semibold [text-wrap:balance]  inline-block;
+  }
+
+  .ui-title {
+     @apply text-xl text-primary font-semibold [text-wrap:balance];
+  }
+
+  .ui-sm-title {
+     @apply text-lg text-primary font-semibold [text-wrap:balance];
+  }
+
+  .ui-description {
+     @apply ui-text [text-wrap:balance];
+  }
+
+  .ui-header {
+     @apply ui-text font-medium;
+  }
+
+  .ui-text {
+     @apply text-slate-900 text-sm md:text-base 2xl:text-lg #{!important};
+  }
+
+  .ui-bg-white {
+     @apply bg-white dark:bg-slate-950 #{!important};
+  }
+
+  .ui-bg-slate {
+     @apply bg-slate-100 dark:bg-slate-800 #{!important};
+  }
+
+  .ui-text-skeleton {
+     @apply rounded-md h-4 animate-skeleton;
+  }
+
+  .ui-svg-skeleton {
+     @apply rounded-md animate-svg-skeleton;
+  }
+
+  .ui-mat-menu-a {
+     @apply flex justify-start items-center gap-x-3 ui-text cursor-pointer h-12 w-full px-6 hover:ui-bg-slate duration-300;
+  }
+
+  .ui-nav-a {
+     @apply cursor-pointer hover:underline hover:underline-offset-4;
+  }
+
+  .file-field {
+     @apply relative ui-text cursor-default border border-slate-200 hover:border-[#bbbdc3] dark:border-slate-700 hover:dark:border-slate-600 ui-bg-slate mt-1 basis-64 grow justify-start items-center rounded-xl flex gap-x-2 duration-300 mb-6;
+  }
+
+  .ui-icon-button-primary {
+     @apply relative bg-primary hover:brightness-110 stroke-white flex justify-center items-center size-9 p-1 shrink-0 grow-0 rounded-[25%] cursor-pointer disabled:cursor-not-allowed disabled:opacity-75 duration-300 #{!important};
+  }
+
+  .ui-button-primary {
+     @apply relative bg-primary hover:brightness-110 text-white flex justify-center items-center px-4 py-2 shrink-0 grow-0 text-sm font-medium rounded-xl cursor-pointer disabled:cursor-not-allowed disabled:opacity-75 duration-300 #{!important};
+  }
+
+  .ui-icon-button-secondary {
+     @apply relative bg-primary/10 hover:bg-primary/15 text-primary border-2 border-primary flex justify-center items-center size-9 p-1 shrink-0 grow-0 rounded-[25%] cursor-pointer disabled:cursor-not-allowed disabled:opacity-75 duration-300 #{!important};
+  }
+
+  .ui-button-secondary {
+     @apply relative bg-primary/10 hover:bg-primary/15 text-primary border-2 border-primary flex justify-center items-center px-3.5 py-1.5 shrink-0 grow-0 text-sm font-medium rounded-xl cursor-pointer disabled:cursor-not-allowed disabled:opacity-75 duration-300 #{!important};
+  }
+
+  .ui-icon-button-tertiary {
+     @apply relative bg-primary/10 hover:bg-primary/15 text-primary dark:text-slate-100 flex justify-center items-center size-9 p-1 shrink-0 grow-0 rounded-[25%] cursor-pointer disabled:cursor-not-allowed disabled:opacity-75 duration-300 #{!important};
+  }
+
+  .ui-button-tertiary {
+     @apply relative bg-primary/10 hover:bg-primary/15 text-primary flex justify-center items-center px-4 py-2 shrink-0 grow-0 text-sm font-medium rounded-xl cursor-pointer disabled:cursor-not-allowed disabled:opacity-75 duration-300 #{!important};
+  }
+
+  .ui-text-tertiary {
+     @apply text-primary inline-flex justify-center items-center shrink-0 grow-0 px-2 py-1 font-medium rounded-xl cursor-pointer disabled:cursor-not-allowed disabled:opacity-75 duration-300;
+  }
+
+  .menu-item {
+     @apply ui-bg-white flex justify-start items-center gap-x-3 text-sm md:text-base 2xl:text-lg font-medium p-3 rounded-xl cursor-pointer hover:text-primary border-2 border-transparent hover:border-primary duration-300 #{!important};
+  }
+
+  .menu-item-active {
+     @apply text-white bg-primary hover:text-white #{!important};
+  }
+}
+
+.ui-table {
+  @apply w-full rounded-b-3xl overflow-x-auto relative;
+
+  .search-container {
+     @apply w-full sticky left-0;
+
+     .searcher {
+        @apply w-full md:w-2/3 lg:w-1/2 2xl:w-1/4;
+     }
+  }
+
+  .table {
+     @apply overflow-x-scroll w-full;
+
+     .mat-mdc-table {
+        @apply bg-transparent w-full;
+
+        .mat-mdc-header-row {
+           @apply bg-primary/5 rounded-t-3xl;
+
+           .mat-sort-header-content {
+              @apply ui-text font-semibold;
+           }
+        }
+
+        .mat-mdc-cell {
+           @apply ui-text;
+        }
+
+        .img {
+           @apply w-8 aspect-square rounded-md object-cover;
+        }
+     }
+  }
+
+  .mat-mdc-paginator {
+     @apply overflow-hidden bg-transparent sticky left-0;
+
+     .mat-mdc-paginator-page-size-label,
+     .mat-mdc-select-value,
+     .mat-mdc-paginator-range-label,
+     .mat-mdc-paginator-icon:not(.mat-mdc-paginator-icon.mat-mdc-tooltip-disabled),
+     .mat-mdc-select-arrow {
+        @apply ui-text;
+     }
+  }
+}

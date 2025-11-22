@@ -1,0 +1,28 @@
+section {
+  background-color: #BDDEC6;
+  padding: 5%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+
+}
+
+section button {
+  background-color: #126AD1;
+  color: white;
+  border: none;
+  padding: 5px 20px;
+  font-size: 14pt;
+  cursor: pointer;
+  width: 250px;
+  height: 50px;
+  border-radius: 10px;
+
+}
+section .egreso {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+}
+
