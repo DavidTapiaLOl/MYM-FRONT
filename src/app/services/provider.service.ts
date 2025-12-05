@@ -158,4 +158,24 @@ export class ProviderService {
       })
       return type == 'success';
    }
+
+   async upload(file: File): Promise<string> {
+      const formData = new FormData();
+      formData.append('file', file);
+      // Usamos la configuración de Cloudinary de tu archivo config.ts
+      formData.append('upload_preset', utils.UPLOAD_CONFIG.upload_preset);
+
+      return new Promise((resolve, reject) => {
+         this._http.post(utils.UPLOAD_CONFIG.api_url, formData).subscribe({
+            next: (res: any) => {
+               // Retornamos la URL segura de la imagen
+               resolve(res.secure_url);
+            },
+            error: (err) => {
+               console.error('Error subiendo imagen', err);
+               reject(err);
+            }
+         });
+      });
+   }
 }

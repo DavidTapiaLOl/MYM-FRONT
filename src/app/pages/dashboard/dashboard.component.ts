@@ -18,95 +18,37 @@ export class DashboardComponent {
   public dialog: MatDialog = inject(MatDialog)
   public form: FormService = inject(FormService)
 
-
   constructor(){
     this.form.ejecutar$.subscribe(()=> this.ngOnInit())
   }
-  data: any = [
-
-  ]
-  sumas: any=[
-
-  ]
-
-  infoGrafica: any=[
-
-  ]
-
+  
+  data: any = []
+  sumas: any = []
+  
+  // VARIABLES SEPARADAS
+  tablaMensual: any = []   // Para la tabla de ingresos/egresos/balance
+  datosGrafica: any = []   // Para la gráfica de conceptos
 
   async ngOnInit() {
-    this.data = await this.provider.request('POST', 'ingreso','Getinfo',{
+    const idUsuario = this.auth.get_user().id;
 
-      id: this.auth.get_user().id
-    })
-    this.sumas = await this.provider.request('POST', 'ingreso','Getsuma',{
+    // 1. Movimientos recientes (Tabla de abajo)
+    this.data = await this.provider.request('POST', 'ingreso','Getinfo',{ id: idUsuario })
+    
+    // 2. Sumas totales (Cajas de arriba)
+    this.sumas = await this.provider.request('POST', 'ingreso','Getsuma',{ id: idUsuario })
 
-      id: this.auth.get_user().id
-    })
-    console.log(this.sumas);
+    // 3. DATOS PARA LA TABLA MENSUAL (Ingresos vs Egresos)
+    this.tablaMensual = await this.provider.request('POST', 'ingreso', 'graficaMes', { id: idUsuario });
 
-    this.infoGrafica = await this.provider.request('POST', 'ingreso','graficaMes',{
-      id: this.auth.get_user().id
-    })
-    // console.log(this.infoGrafica);
-
-
-
+    // 4. DATOS PARA LA GRÁFICA (Egresos por Concepto)
+    this.datosGrafica = await this.provider.request('POST', 'egreso', 'graficaConceptos', { id: idUsuario });
   }
-  // Midata = [
-  //   {
-  //     value: 200, category: "Enero"
-  //   },
-  //   {
-  //     value: 370, category: "Febrero"
-  //   },
-  //   {
-  //     value: 500, category: "Marzo"
-  //   },
-  //   {
-  //     value: 100, category: "Abril"
-  //   },
-  //   {
-  //     value: 250, category: "Mayo"
-  //   },
-  //   {
-  //     value: 130, category: " junio"
-  //   },
-  //   {
-  //      value: 1203, category: "Julio"
-  //   },
-  //   {
-  //     value: 410, category: "Agosto"
-  //   },
-  //   {
-  //     value: 6, category: "Septiembre"
-  //   },
-  //   {
-  //     value: 98, category: "Octubre"
-  //   },
-  //   {
-  //     value: 632, category: "Noviembre"
-  //   },
-  //   {
-  //     value: 400, category: "Diciembre"
-  //   },
-  // ]
-
 
   click(row?:any){
-
-    //console.log(row);
-
+    const ruta = row ? row['03_tipo'].toLowerCase() : 'ingreso';
     this.dialog.open(FormularioEgresoComponent,{
-      data:{...row, ruta: row['03_tipo'].toLowerCase()}
-
+      data:{...row, ruta: ruta}
     })
-
-
-
-}
-
-
-
-
+  }
 }

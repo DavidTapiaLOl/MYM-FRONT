@@ -35,7 +35,7 @@ const routes: Routes = [
   },
   {
     path: 'ingreso',
-    component: EgresosComponent,
+    component: IngresosComponent,
     canActivate: [authGuard]
   },
   {

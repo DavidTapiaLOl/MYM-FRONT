@@ -1,12 +1,46 @@
 <section>
+  <!-- TARJETAS DE TOTALES -->
   <div class="sumascontainer">
     <div class="egreso">-${{sumas?.egreso}}</div>
     <div class="ingreso">${{sumas?.ingreso}}</div>
   </div>
-  <h1>Ingresos conforme al tiempo</h1>
-  <bar-chart [data]="infoGrafica"></bar-chart>
+
+  <!-- 1. TABLA DE RELACIÓN MENSUAL (Ingresos vs Egresos) -->
+  <h1 class="mt-6 mb-2 text-xl font-bold text-gray-700">Relación Mensual</h1>
+  <div class="overflow-x-auto bg-white rounded-lg shadow-md mb-8">
+    <table class="w-full text-sm text-left text-gray-500">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+        <tr>
+          <th scope="col" class="px-6 py-3">Mes</th>
+          <th scope="col" class="px-6 py-3 text-green-600">Ingresos</th>
+          <th scope="col" class="px-6 py-3 text-red-600">Egresos</th>
+          <th scope="col" class="px-6 py-3">Balance</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of tablaMensual; track $index) {
+          <tr class="bg-white border-b hover:bg-gray-50">
+            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{{ item.mes }}</td>
+            <td class="px-6 py-4 text-green-600 font-bold">+ ${{ item.ingreso }}</td>
+            <td class="px-6 py-4 text-red-600 font-bold">- ${{ item.egreso }}</td>
+            <td class="px-6 py-4 font-bold" [class.text-green-600]="item.balance >= 0" [class.text-red-600]="item.balance < 0">
+              ${{ item.balance }}
+            </td>
+          </tr>
+        } @empty {
+          <tr><td colspan="4" class="px-6 py-4 text-center">No hay datos aún.</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 2. GRÁFICA DE EGRESOS POR CONCEPTO -->
+  <h1 class="mt-6 mb-2 text-xl font-bold text-gray-700">Egresos por Concepto</h1>
+  <div class="w-full bg-white rounded-lg shadow-md p-4 mb-8" style="height: 400px;"> <!-- Altura fija obligatoria -->
+      <bar-chart [data]="datosGrafica"></bar-chart>
+  </div>
+
+  <!-- 3. TABLA DE MOVIMIENTOS RECIENTES -->
+  <h1>Movimientos Recientes</h1>
   <ui-table style="width: 100%;" (clicktabla)="click($event)" [data]="data"></ui-table>
-
-
 </section>
-

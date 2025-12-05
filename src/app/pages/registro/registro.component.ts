@@ -9,50 +9,98 @@ import { LayoutService } from '../../services/layout.service';
   selector: 'app-registro',
   templateUrl: './registro.component.html',
   styleUrl: './registro.component.css',
-
 })
 export class RegistroComponent {
-  private FormBuilder: FormBuilder = inject (FormBuilder)
+  private FormBuilder: FormBuilder = inject(FormBuilder);
   private auth: AuthService = inject(AuthService);
-  private provider: ProviderService = inject(ProviderService)
-  private router: Router = inject(Router)
-  public layout: LayoutService = inject(LayoutService)
+  private provider: ProviderService = inject(ProviderService);
+  private router: Router = inject(Router);
+  public layout: LayoutService = inject(LayoutService);
 
-  listas: any = []
+  previewUrl: string | null = null;
+  loadingFoto: boolean = false;
+
+  listas: any = [];
   hide = true;
 
   Formulario: FormGroup = this.FormBuilder.group({
-  nombre:[null,[Validators.required]] ,
-  apellido_paterno:[null,[Validators.required]] ,
-  apellido_materno:[null,[Validators.required]] ,
-  fecha_nacimiento:[null,[Validators.required]] ,
-  correo:[null,[Validators.required]] ,
-  telefono:[null,[Validators.required]] ,
-  usuario:[null,[Validators.required]] ,
-  password:[null,[Validators.required]] ,
-  tbl_municipio_id:[null,[Validators.required]] ,
-  tbl_pais_id:[null,[Validators.required]] ,
-  tbl_estado_id:[null,[Validators.required]] ,
-})
+    nombre: [null, [Validators.required]],
+    apellido_paterno: [null, [Validators.required]],
+    apellido_materno: [null, [Validators.required]],
+    fecha_nacimiento: [null, [Validators.required]],
+    correo: [null, [Validators.required]],
+    telefono: [null, [Validators.required]],
+    usuario: [null, [Validators.required]],
+    password: [null, [Validators.required]],
+    tbl_municipio_id: [null, [Validators.required]],
+    tbl_pais_id: [null, [Validators.required]],
+    tbl_estado_id: [null, [Validators.required]],
+    foto_perfil: [null] // <--- NUEVO CAMPO
+  });
 
   async ngOnInit() {
-   this.listas['pais'] = await this.provider.request('POST','pais','GetAll')
-   this.Formulario.controls[ "tbl_pais_id" ] . valueChanges.subscribe(async (id: any) =>
-   this.listas['estado'] = await this.provider.request('POST', 'estado', 'GetIdxPais',{id}))
+    this.listas['pais'] = await this.provider.request('POST', 'pais', 'GetAll');
+    
+    this.Formulario.controls['tbl_pais_id'].valueChanges.subscribe(async (id: any) =>
+      this.listas['estado'] = await this.provider.request('POST', 'estado', 'GetIdxPais', { id })
+    );
 
-
-   this.Formulario.controls[ "tbl_estado_id" ] . valueChanges.subscribe(async (id: any) =>
-   this.listas['municipio'] = await this.provider.request('POST', 'municipio', 'GetIdxEstado',{id}))
-  }
-  async submit(){
-    let registro: any = (await this.auth.sign_up(this.Formulario.value) as any)
-    //console.log(registro, registro?.estatus, registro?.['estatus']);
-
-    if(registro.estatus)
-      this.router.navigate(['/login'])
-
+    this.Formulario.controls['tbl_estado_id'].valueChanges.subscribe(async (id: any) =>
+      this.listas['municipio'] = await this.provider.request('POST', 'municipio', 'GetIdxEstado', { id })
+    );
   }
 
+  async onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.loadingFoto = true;
+      try {
+        const url = await this.provider.upload(file);
+        this.previewUrl = url;
+        this.Formulario.patchValue({ foto_perfil: url });
+      } catch (error) {
+        alert('Error al subir la imagen');
+      } finally {
+        this.loadingFoto = false;
+      }
+    }
+  }
 
+  async submit() {
+    if (this.Formulario.invalid) {
+       this.Formulario.markAllAsTouched();
+       return;
+    }
 
+    // 1. Obtenemos los valores del formulario
+    const datos = { ...this.Formulario.value };
+
+    // --- CORRECCIÓN CRÍTICA PARA MYSQL ---
+    // Si hay fecha, la convertimos a formato simple YYYY-MM-DD
+    if (datos.fecha_nacimiento) {
+        try {
+            // Convertimos a objeto Date y luego a string ISO, cortando la parte de la hora
+            datos.fecha_nacimiento = new Date(datos.fecha_nacimiento).toISOString().split('T')[0];
+        } catch (e) {
+            console.error('Error al formatear fecha', e);
+        }
+    }
+    // -------------------------------------
+
+    // 2. Enviamos la variable 'datos' corregida, NO el formulario crudo
+    try {
+        let registro: any = await this.auth.sign_up(datos);
+        
+        if (registro && registro.estatus) {
+            // Éxito
+            this.router.navigate(['/login']);
+        } else {
+            // Error controlado del backend (opcional: mostrar alerta)
+            console.error('Error en registro:', registro);
+            alert(registro?.mensaje || 'Error al registrar el usuario');
+        }
+    } catch (error) {
+        console.error('Error de servidor:', error);
+    }
+  }
 }

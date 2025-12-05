@@ -19,7 +19,10 @@ export class EgresosComponent {
   public auth: AuthService = inject(AuthService)
 
   ruta: string = this.router.url.replace('/','')
-  data: any
+  
+  // Variables separadas para las listas
+  egresosGenerales: any[] = [];
+  egresosFijos: any[] = [];
 
   constructor(){
     this.form.ejecutar$.subscribe(()=> this.ngOnInit())
@@ -32,32 +35,24 @@ export class EgresosComponent {
       }
     })
 
-    this.data = await this.provider.request('POST',this.ruta,'GetAll', {
+    const todosLosEgresos = await this.provider.request('POST',this.ruta,'GetAll', {
       id: this.auth.get_user().id
-    })
-
-
-
-
-
-
-  }
-/*   async Abrirdialogo(){
-    this.dialog.open(FormularioEgresoComponent, {
-      data:{ ruta: this.ruta}
     });
 
-  } */
+    if (Array.isArray(todosLosEgresos)) {
+        // Filtramos: si es_fijo es 1 (true) va a fijos, si es 0 va a generales
+        this.egresosFijos = todosLosEgresos.filter((e: any) => e.es_fijo == 1);
+        this.egresosGenerales = todosLosEgresos.filter((e: any) => e.es_fijo == 0 || !e.es_fijo);
+    }
+  }
 
- Editardialog(row?:any){
+  Editardialog(row?:any){
     this.dialog.open(FormularioEgresoComponent,{
       data:{...row, ruta: this.ruta}
     })
-}
+  }
 
-async eliminar(elemento:any){
-  this.form.delete('POST',this.ruta, 'Delete',{id:elemento.id})
-
-}
-
+  async eliminar(elemento:any){
+    this.form.delete('POST',this.ruta, 'Delete',{id:elemento.id})
+  }
 }

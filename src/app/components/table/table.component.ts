@@ -21,10 +21,8 @@ import { Router } from '@angular/router';
    styleUrl: './table.component.scss',
 })
 export class TableComponent {
-   // Inyección de servicios y definición de variables
    private _dialog: MatDialog = inject(MatDialog);
    public _router: Router = inject(Router);
-
    public _layout: LayoutService = inject(LayoutService);
 
    _data: any[] = [];
@@ -41,37 +39,41 @@ export class TableComponent {
    @ViewChild(MatPaginator) paginator!: MatPaginator;
 
    async ngOnChanges(changes: SimpleChanges) {
-      // Actualización de datos en la tabla
-      this._data = changes['data']?.currentValue ?? this._data;
-      this.ui_data = await new MatTableDataSource(this._data);
-      this.ui_data.paginator = await this.paginator;
-      this.ui_data.sort = await this.sort;
+      // --- CORRECCIÓN: Validación de datos ---
+      const incomingData = changes['data']?.currentValue;
+      
+      // Si incomingData es un arreglo real, lo usamos. Si es null, undefined o un error, usamos []
+      this._data = Array.isArray(incomingData) ? incomingData : [];
 
-      this.columns = await Object.keys(this._data[0] ?? []);
-      if (!this.columns.includes('Acciones') && this.data.length > 0)
-      this.columns.push('Acciones');
-    //console.log(this.columns);
+      this.ui_data = new MatTableDataSource(this._data);
+      this.ui_data.paginator = this.paginator;
+      this.ui_data.sort = this.sort;
 
-
+      // Solo calculamos columnas si hay datos
+      if (this._data.length > 0) {
+         this.columns = Object.keys(this._data[0]);
+         if (!this.columns.includes('Acciones')) {
+            this.columns.push('Acciones');
+         }
+      } else {
+         this.columns = [];
+      }
    }
+
    ngAfterViewInit(): void {
-    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-    //Add 'implements AfterViewInit' to the class.
    }
 
    async filter(query: string) {
-      // Aplicación de filtro manual en la tabla
-      this.ui_data.filter = await query
+      this.ui_data.filter = query
          .trim()
          .normalize('NFD')
          .replace(/[\u0300-\u036f]/g, '')
          .toLowerCase();
 
-      if (this.ui_data.paginator) await this.ui_data.paginator.firstPage();
+      if (this.ui_data.paginator) this.ui_data.paginator.firstPage();
    }
 
    async open_filters() {
-      // Apertura de diálogo de filtros
       this._dialog
          .open(FilterComponent, {
             data: {
@@ -82,24 +84,22 @@ export class TableComponent {
          })
          .afterClosed()
          .subscribe(async (filter_data: any[]) => {
-
-            // Al cerrar el diálogo, se aplican los filtros
             if (filter_data && !Object.values(filter_data).every(x => x == null || x == '')) {
-               this.applied_filters = await filter_data;
+               this.applied_filters = filter_data;
                await this.apply_filter(filter_data);
             }
          });
    }
 
    async delete_filter(key: any) {
-      await delete this.applied_filters[key];
+      delete this.applied_filters[key];
 
       if (Object.keys(this.applied_filters).length > 0)
          await this.apply_filter(this.applied_filters);
       else {
-         this.ui_data = await new MatTableDataSource(this._data);
-         this.ui_data.paginator = await this.paginator;
-         this.ui_data.sort = await this.sort;
+         this.ui_data = new MatTableDataSource(this._data);
+         this.ui_data.paginator = this.paginator;
+         this.ui_data.sort = this.sort;
       }
    }
 
@@ -113,13 +113,10 @@ export class TableComponent {
    }
 
    clickElemento(elemento: any){
-
     this.clicktabla.emit(elemento);
    }
 
    eliminarElemento(elemento:any){
     this.eliminar.emit(elemento);
-
    }
-
 }

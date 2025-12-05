@@ -21,6 +21,9 @@ export class PerfilComponent {
   public layout: LayoutService = inject(LayoutService)
   private snackbar: MatSnackBar = inject(MatSnackBar)
 
+   previewUrl: string | null = null;
+  loadingFoto: boolean = false;
+
 
   listas: any = []
 
@@ -33,10 +36,11 @@ export class PerfilComponent {
     correo: [null, [Validators.required]],
     telefono: [null, [Validators.required]],
     usuario: [null, [Validators.required]],
-    password: [null, [Validators.required]],
+    password: [null],
     tbl_municipio_id: [null, [Validators.required]],
     tbl_pais_id: [null, [Validators.required]],
     tbl_estado_id: [null, [Validators.required]],
+    foto_perfil: [null] // <--- NUEVO CAMPO
   })
 
   async ngOnInit() {
@@ -49,6 +53,24 @@ export class PerfilComponent {
 
     await this.form.patch(info, this.Formulario)
 
+  }
+
+
+  
+  async onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.loadingFoto = true;
+      try {
+        const url = await this.provider.upload(file);
+        this.previewUrl = url;
+        this.Formulario.patchValue({ foto_perfil: url });
+      } catch (error) {
+        alert('Error al subir la imagen');
+      } finally {
+        this.loadingFoto = false;
+      }
+    }
   }
   async submit() {
     this.provider.request('POST', 'registro', 'Update', this.Formulario.value)

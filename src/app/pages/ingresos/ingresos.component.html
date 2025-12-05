@@ -1,9 +1,16 @@
-<body>
-  <section>
-    <div class="ingreso">
-      <button mat-flat-button>Agregar Ingreso</button>
+<section>
+    <div class="header">
+        <h1>Ingresos</h1>
+        <button mat-flat-button color="primary" (click)="Editardialog()">
+            <i-tabler name="plus" class="icon-20"></i-tabler> Agregar Ingreso
+        </button>
     </div>
-  </section>
 
-</body>
-
+    <div class="mt-4">
+        <ui-table 
+            [data]="data" 
+            (clicktabla)="Editardialog($event)" 
+            (eliminar)="eliminar($event)">
+        </ui-table>
+    </div>
+</section>

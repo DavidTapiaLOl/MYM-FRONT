@@ -2,6 +2,22 @@
 <section>
   <!-- <img src="assets/fondo.png" alt=""> -->
   <div class="formulario">
+
+    <div class="flex flex-col items-center mb-6">
+        <div class="relative w-32 h-32 mb-2 overflow-hidden rounded-full border-4 border-gray-200">
+            @if (previewUrl) {
+                <img [src]="previewUrl" class="w-full h-full object-cover">
+            } @else {
+                <div class="flex items-center justify-center w-full h-full bg-gray-100 text-gray-400">
+                    <i-tabler name="user" class="icon-48"></i-tabler>
+                </div>
+            }
+        </div>
+        <button type="button" mat-stroked-button (click)="fileInput.click()">
+            {{ loadingFoto ? 'Subiendo...' : 'Subir Foto' }}
+        </button>
+        <input #fileInput type="file" hidden (change)="onFileSelected($event)" accept="image/*">
+    </div>
     <form [ngClass]="layout.grid(sc)" #sc [formGroup]="Formulario"  (ngSubmit)="submit()">
        <mat-form-field appearance="outline">
         <mat-label>Nombre</mat-label>

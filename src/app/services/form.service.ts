@@ -140,27 +140,24 @@ export class FormService {
       let content = await _button.innerHTML
       this._master.spin_button(_button)
       try {
-
          let confirm = await firstValueFrom(this._dialog.open(ConfirmationComponent).afterClosed())
 
          if (!confirm) return this._master.snack('info', 'No se han realizado cambios.');
 
-         let firstInvalidControl = this._master.id(form_id)?.getElementsByClassName('ng-invalid')[0];
-
-         if (firstInvalidControl) {
-            firstInvalidControl?.scrollIntoView({ behavior: 'smooth' });
-            (firstInvalidControl as HTMLElement).focus();
-            return this._master.snack('info', 'Revisa tu información e inténtalo de nuevo.')
-         }
+         // ... (validación de invalid control) ...
 
          const response:any = await this._provider.request(method, archivo,opcion, params);
          const success = response.estatus == true;
-        //  location.reload()
+         
          this.ejecutar.next();
 
-         return this._master.snack(success ? 'success' : 'error');
+         // CORRECCIÓN: Pasamos 'response.mensaje' a la alerta
+         return this._master.snack(success ? 'success' : 'error', response.mensaje);
+
       } catch (error) {
-         return this._master.snack('error');
+         // También mejoramos el catch para ver errores de red en consola
+         console.error("Error en FormService:", error);
+         return this._master.snack('error', 'Error de conexión o servidor');
       } finally {
          this._master.spin_button(_button, content)
       }

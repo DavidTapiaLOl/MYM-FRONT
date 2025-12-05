@@ -1,7 +1,7 @@
 const PROTOCOL = typeof window !== 'undefined' ? window.location.protocol : 'http:'; // Asigna un valor por defecto para Node.js
 const DOMINIO = typeof window !== 'undefined' ? window.location.hostname : 'localhost'; // Asigna un valor por defecto para Node.js
 const ACCESS = 'public'
-const WSERVICE = 'ws_proyecto_financiero';
+const WSERVICE = '';
 const CLOUD_NAME = 'conexionb2b';
 const CLOUD_PRESET = 'conexion_b2b';
 const CLOUD_API = '635696783638373';
@@ -14,7 +14,7 @@ export const utils = {
    USER: 'APP_USER',
    APP_LANG: 'APP_LANG',
 
-   URL: PROTOCOL + '//' + DOMINIO + '/' + WSERVICE + '/',
+   URL: 'http://localhost/',
 
    // MAPS
    GOOGLE_MAPS_KEY: 'AIzaSyAaaUa6YO7aU4l9oL0yulQsr738I-sTH70',

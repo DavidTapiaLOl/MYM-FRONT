@@ -81,7 +81,13 @@
         </div>
       </mat-select>
     </mat-form-field>
-    <button  id="boton">Guardar</button>
+    @if (data.ruta == 'egreso') {
+        <div class="mb-4">
+            <mat-checkbox formControlName="es_fijo">¿Es un Egreso Fijo?</mat-checkbox>
+        </div>
+    }
+
+    <button id="boton" type="submit">Guardar</button>
   </form>
 </mat-dialog-content>
 <!-- </body> -->
