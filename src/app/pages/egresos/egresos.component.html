@@ -1,34 +1,69 @@
-<section>
-    <div class="header">
-        <h1>Egresos</h1>
-        <button mat-flat-button color="primary" (click)="Editardialog()">
-            <i-tabler name="plus" class="icon-20"></i-tabler> Agregar Egreso
-        </button>
+<div class="page-container">
+  
+  <div class="content-card">
+    
+    <div class="card-header">
+      <div class="header-text">
+        <h1 class="page-title">Gestión de Egresos</h1>
+        <p class="page-subtitle">Administra tus gastos fijos y movimientos generales</p>
+      </div>
+      
+      <button class="add-btn" mat-ripple (click)="Editardialog()">
+        <i-tabler name="plus" class="icon-20"></i-tabler>
+        <span>Nuevo Egreso</span>
+      </button>
     </div>
 
-    <mat-tab-group>
-        <mat-tab label="Egresos Generales">
-            <div class="mt-4">
-                <ui-table 
-                    [data]="egresosGenerales" 
-                    (clicktabla)="Editardialog($event)" 
-                    (eliminar)="eliminar($event)">
-                </ui-table>
+    <mat-tab-group animationDuration="0ms" mat-stretch-tabs="false" class="custom-tabs">
+      
+      <mat-tab label="Generales">
+        <div class="tab-content">
+          <div class="table-wrapper">
+             <ui-table 
+                [data]="egresosGenerales" 
+                (clicktabla)="Editardialog($event)" 
+                (eliminar)="eliminar($event)">
+            </ui-table>
+          </div>
+          
+          @if (egresosGenerales.length === 0) {
+            <div class="empty-state">
+              <span class="text-gray-400">No hay egresos generales registrados.</span>
             </div>
-        </mat-tab>
+          }
+        </div>
+      </mat-tab>
 
-        <mat-tab label="Egresos Fijos">
-            <div class="mt-4">
-                <div class="alert-info p-4 mb-4 bg-blue-100 rounded text-blue-800">
-                    <i-tabler name="info-circle"></i-tabler> 
-                    Estos son tus gastos recurrentes.
-                </div>
-                <ui-table 
-                    [data]="egresosFijos" 
-                    (clicktabla)="Editardialog($event)" 
-                    (eliminar)="eliminar($event)">
-                </ui-table>
+      <mat-tab label="Recurrentes (Fijos)">
+        <div class="tab-content">
+          
+          <div class="info-alert">
+            <div class="icon-box">
+              <i-tabler name="info-circle" class="icon-24"></i-tabler> 
             </div>
-        </mat-tab>
+            <div>
+              <p class="font-bold">Gastos Fijos</p>
+              <p class="text-sm">Estos gastos se repiten periódicamente (Renta, Internet, Netflix, etc).</p>
+            </div>
+          </div>
+
+          <div class="table-wrapper">
+            <ui-table 
+                [data]="egresosFijos" 
+                (clicktabla)="Editardialog($event)" 
+                (eliminar)="eliminar($event)">
+            </ui-table>
+          </div>
+
+           @if (egresosFijos.length === 0) {
+            <div class="empty-state">
+              <span class="text-gray-400">No hay gastos fijos configurados.</span>
+            </div>
+          }
+        </div>
+      </mat-tab>
+
     </mat-tab-group>
-</section>
+
+  </div>
+</div>

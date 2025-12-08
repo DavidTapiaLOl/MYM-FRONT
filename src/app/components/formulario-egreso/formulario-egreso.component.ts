@@ -8,6 +8,8 @@ import { MasterService } from '../../services/master.service';
 import { FormService } from '../../services/form.service';
 import { DialogRef } from '@angular/cdk/dialog';
 import { LayoutService } from '../../services/layout.service';
+import { AgregarItemComponent } from '../agregar-item/agregar-item.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-formulario-egreso',
@@ -23,19 +25,26 @@ export class FormularioEgresoComponent {
   private form: FormService = inject(FormService);
   private dialogref: DialogRef<FormularioEgresoComponent> = inject(DialogRef<FormularioEgresoComponent>);
   public layout: LayoutService = inject(LayoutService);
+  public dialog: MatDialog = inject(MatDialog);
+
+  conceptosFiltrados: any[] = [];
+tiposPagoFiltrados: any[] = [];
+periodosFiltrados: any[] = [];
 
   listas: any = [];
-  acceso: number = this.data.ruta.includes('egreso') ? 0 : 1;
+  
+  
+  acceso: string = this.data.ruta.includes('egreso') ? '0' : '1'; 
+  
   accion: string = 'Insert';
 
   Formulario: FormGroup = this.FormBuilder.group({
     id: [null],
     descripcion: [null, [Validators.required]],
     monto: [null, [Validators.required]],
-    fecha_limite: [null], // Quitamos required aquí, lo ponemos dinámicamente si es necesario
-    // Inicializamos con fecha de hoy y deshabilitado
+    fecha_limite: [null], 
     fecha_registro: [{ value: new Date(), disabled: true }, [Validators.required]],
-    fecha_pago: [null, [Validators.required]],
+    fecha_pago: [null], //fecha de pago no es obligatoria
     tbl_concepto_id: [null, [Validators.required]],
     tbl_tipo_pago_id: [null, [Validators.required]],
     tbl_periodo_id: [null, [Validators.required]],
@@ -44,16 +53,35 @@ export class FormularioEgresoComponent {
   });
 
   async ngOnInit() {
-    this.listas['concepto'] = await this.provider.request('POST', 'concepto', 'GetAll');
-    this.listas['tipo_pago'] = await this.provider.request('POST', 'tipo_pago', 'GetAll');
-    this.listas['periodo'] = await this.provider.request('POST', 'periodo', 'GetAll');
+  console.log("--> RUTA RECIBIDA:", this.data.ruta);
 
-    // Validación condicional: Si es Egreso, la fecha límite es obligatoria
-    if (this.data.ruta === 'egreso') {
-        this.Formulario.get('fecha_limite')?.addValidators(Validators.required);
-        this.Formulario.get('fecha_limite')?.updateValueAndValidity();
-    }
+  this.acceso = this.data.ruta.includes('egreso') ? '0' : '1';
+  console.log("--> ACCESO CALCULADO:", this.acceso);
+
+
+  const rawConceptos = await this.provider.request('POST', 'concepto', 'GetAll') as any[];
+  const rawTipos = await this.provider.request('POST', 'tipo_pago', 'GetAll') as any[];
+  const rawPeriodos = await this.provider.request('POST', 'periodo', 'GetAll') as any[];
+
+
+  this.conceptosFiltrados = rawConceptos.filter((x: any) => x.acceso == this.acceso);
+  this.tiposPagoFiltrados = rawTipos.filter((x: any) => x.acceso == this.acceso);
+  this.periodosFiltrados = rawPeriodos;
+
+
+  console.log("--> Conceptos Filtrados:", this.conceptosFiltrados);
+  console.log("--> Periodos Filtrados:", this.periodosFiltrados);
+
+
+  this.listas['concepto'] = rawConceptos;
+  this.listas['tipo_pago'] = rawTipos;
+  this.listas['periodo'] = rawPeriodos;
+
+  if (this.data.ruta && this.data.ruta.includes('egreso')) {
+      this.Formulario.get('fecha_limite')?.addValidators(Validators.required);
+      this.Formulario.get('fecha_limite')?.updateValueAndValidity();
   }
+}
 
   async ngAfterViewInit() {
     if (this.data.id) {
@@ -63,16 +91,40 @@ export class FormularioEgresoComponent {
     }
   }
 
-  async agregar(archivo: string, nombre: string) {
-    if (nombre.length > 0) {
-      let elemento: any = {
-        nombre,
-        acceso: this.acceso,
-        id: (await this.provider.request('POST', archivo, 'Insert', { nombre, acceso: this.acceso }) as any).id,
-        tbl_registro_id: this.auth.get_user().id
-      };
-      this.listas[archivo].push(elemento);
-    }
+  abrirModalItem(archivo: string, titulo: string) {
+    const dialogRef = this.dialog.open(AgregarItemComponent, {
+      width: '600px',       
+      maxWidth: '95vw',     
+      maxHeight: '90vh',    
+      disableClose: true,   
+      data: { 
+        archivo: archivo,
+        titulo: titulo,
+        acceso: this.acceso
+      }
+    });
+
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+
+        if (!this.listas[archivo]) this.listas[archivo] = [];
+        this.listas[archivo].push(result);
+
+        if (archivo === 'concepto') {
+            this.conceptosFiltrados.push(result);
+            this.Formulario.patchValue({ tbl_concepto_id: result.id }); 
+        }
+        if (archivo === 'periodo') {
+            this.periodosFiltrados.push(result);
+            this.Formulario.patchValue({ tbl_periodo_id: result.id });
+        }
+        if (archivo === 'tipo_pago') {
+            this.tiposPagoFiltrados.push(result);
+            this.Formulario.patchValue({ tbl_tipo_pago_id: result.id });
+        }
+      }
+    });
   }
 
   async onSubmit() {
@@ -81,14 +133,11 @@ export class FormularioEgresoComponent {
         return;
     }
 
-    // [FIX IMPORTANTE] Usamos getRawValue() para obtener el campo disabled (fecha_registro)
     const datos = this.Formulario.getRawValue();
 
-    // Formateamos las fechas de forma segura
     datos.fecha_registro = this.formatearFecha(datos.fecha_registro);
     datos.fecha_pago = this.formatearFecha(datos.fecha_pago);
     
-    // Solo formateamos fecha límite si existe (en ingresos puede ser null)
     if (datos.fecha_limite) {
         datos.fecha_limite = this.formatearFecha(datos.fecha_limite);
     }
@@ -97,12 +146,19 @@ export class FormularioEgresoComponent {
     this.dialogref.close();
   }
 
-  filtrarListas(listas: string): any {
-    return this.listas[listas]?.filter((elemento: any) => elemento.acceso == this.acceso) || [];
+  
+  filtrarListas(nombreLista: string): any {
+
+    if (!this.listas[nombreLista]) return [];
+
+    return this.listas[nombreLista].filter((elemento: any) => {
+
+        return elemento.acceso.toString() === this.acceso.toString();
+    });
   }
 
   formatearFecha(fecha: any) {
-    if (!fecha) return null; // Protección contra nulos
+    if (!fecha) return null;
     try {
         return new Date(fecha).toISOString().split('T')[0];
     } catch (error) {

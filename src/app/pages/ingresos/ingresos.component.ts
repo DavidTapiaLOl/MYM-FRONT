@@ -18,7 +18,7 @@ export class IngresosComponent {
   public form: FormService = inject(FormService)
   public auth: AuthService = inject(AuthService)
 
-  ruta: string = 'ingreso'; // Forzamos la ruta a ingreso
+  ruta: string = 'ingreso'; 
   data: any[] = [];
 
   constructor(){
@@ -26,14 +26,12 @@ export class IngresosComponent {
   }
 
   async ngOnInit(){
-    // Cargamos todos los ingresos sin filtrar por fijo/no fijo
     this.data = await this.provider.request('POST', this.ruta, 'GetAll', {
       id: this.auth.get_user().id
     });
   }
 
   Editardialog(row?:any){
-    // Al abrir el modal, le decimos que la ruta es 'ingreso'
     this.dialog.open(FormularioEgresoComponent,{
       data:{...row, ruta: this.ruta} 
     })

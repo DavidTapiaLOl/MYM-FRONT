@@ -1,6 +1,5 @@
-<!-- <body> -->
 <mat-dialog-content class="formulario">
-  <form [ngClass]="layout.grid(sc)" #sc [formGroup]="Formulario" id="formulario" (ngSubmit)="onSubmit()">
+  <form *ngIf="Formulario" [ngClass]="layout.grid(sc)" #sc [formGroup]="Formulario" id="formulario" (ngSubmit)="onSubmit()">
 
     <mat-form-field appearance="fill">
       <mat-label>Descripcion</mat-label>
@@ -11,8 +10,8 @@
       <mat-label>Monto</mat-label>
       <input matInput type="number" formControlName="monto"/>
     </mat-form-field>
-    @if (data.ruta == 'egreso') {
 
+    @if (data.ruta && data.ruta.includes('egreso')) {
       <mat-form-field appearance="fill">
         <mat-label>Fecha limite</mat-label>
         <input matInput [matDatepicker]="fecha_limite" formControlName="fecha_limite">
@@ -31,63 +30,65 @@
     <mat-form-field appearance="fill">
       <mat-label>Fecha pago</mat-label>
       <input matInput [matDatepicker]="fecha_pago" formControlName="fecha_pago" >
-      <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
       <mat-datepicker-toggle matIconSuffix [for]="fecha_pago"></mat-datepicker-toggle>
       <mat-datepicker #fecha_pago></mat-datepicker>
     </mat-form-field>
-    <mat-form-field appearance="fill">
+
+    
+<mat-form-field appearance="fill">
       <mat-label>Concepto</mat-label>
       <mat-select formControlName="tbl_concepto_id">
-        @for (concepto of filtrarListas('concepto'); track $index) {
-        <mat-option [value]="concepto.id">{{concepto.nombre}}</mat-option>
-
-        }@empty {
-          <mat-option>---</mat-option>
+        @for (concepto of conceptosFiltrados; track $index) {
+            <mat-option [value]="concepto.id">{{concepto.nombre}}</mat-option>
+        } @empty {
+            <mat-option disabled>--- Sin datos ---</mat-option>
         }
-        <div>
-          <input matInput #concepto type="text" placeholder="Otro">
-          <button (click)="agregar('concepto', concepto.value)">+</button>
-        </div>
-
       </mat-select>
+      
+      <button mat-icon-button matSuffix type="button" (click)="abrirModalItem('concepto', 'Concepto'); $event.stopPropagation()">
+        <i-tabler name="plus" class="text-green-600"></i-tabler>
+      </button>
     </mat-form-field>
-    <!-- <mat-label>Tipo de Pago</mat-label> -->
+
     <mat-form-field appearance="fill">
-      <mat-select formControlName="tbl_tipo_pago_id" placeholder="Tipo de Pago">
-        @for (tipo_pago of filtrarListas('tipo_pago'); track $index) {
-        <mat-option [value]="tipo_pago.id">{{tipo_pago.nombre}}</mat-option>
-
-        }@empty {
-          <mat-option>---</mat-option>
+      <mat-label>Tipo de Pago</mat-label>
+      <mat-select formControlName="tbl_tipo_pago_id">
+        @for (tipo_pago of tiposPagoFiltrados; track $index) {
+            <mat-option [value]="tipo_pago.id">{{tipo_pago.nombre}}</mat-option>
+        } @empty {
+            <mat-option disabled>--- Sin datos ---</mat-option>
         }
-        <div>
-          <input matInput #tipo_pago type="text" placeholder="Otro">
-          <button (click)="agregar('tipo_pago', tipo_pago.value)">+</button>
-        </div>
       </mat-select>
+
+      <button mat-icon-button matSuffix type="button" (click)="abrirModalItem('tipo_pago', 'Tipo de Pago'); $event.stopPropagation()">
+        <i-tabler name="plus" class="text-green-600"></i-tabler>
+      </button>
     </mat-form-field>
+
     <mat-form-field appearance="fill">
       <mat-label>Periodo</mat-label>
       <mat-select formControlName="tbl_periodo_id">
-        @for (periodo of filtrarListas('periodo'); track $index) {
-        <mat-option [value]="periodo.id">{{periodo.nombre}}</mat-option>
-
-        }@empty {
-          <mat-option>---</mat-option>
+        @for (periodo of periodosFiltrados; track $index) {
+            <mat-option [value]="periodo.id">{{periodo.nombre}}</mat-option>
+        } @empty {
+            <mat-option disabled>NO HAY DATOS</mat-option>
         }
-        <div>
-          <input matInput #periodo type="text" placeholder="Otro">
-          <button (click)="agregar('periodo', periodo.value)">+</button>
-        </div>
       </mat-select>
+
+      <button mat-icon-button matSuffix type="button" (click)="abrirModalItem('periodo', 'Periodo'); $event.stopPropagation()">
+        <i-tabler name="plus" class="text-green-600"></i-tabler>
+      </button>
     </mat-form-field>
-    @if (data.ruta == 'egreso') {
+   
+
+   
+
+    @if (data.ruta && data.ruta.includes('egreso')) {
         <div class="mb-4">
             <mat-checkbox formControlName="es_fijo">¿Es un Egreso Fijo?</mat-checkbox>
         </div>
     }
 
-    <button id="boton" type="submit">Guardar</button>
+    <button id="boton" mat-raised-button color="primary" type="submit">Guardar</button>
   </form>
 </mat-dialog-content>
-<!-- </body> -->

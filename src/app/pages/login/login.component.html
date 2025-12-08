@@ -1,27 +1,40 @@
-<section>
-  <div class="login">
-      <img src="assets/fondo.png" alt="Logo" />
-      <form [formGroup]="Formulario" (ngSubmit)="onSubmit()">
-        <mat-form-field appearance="outline">
-          <mat-label>Usuario</mat-label>
-          <input
-            matInput
-            formControlName="usuario"
-            type="text"
-            id="usuario"
-          />
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Contraseña</mat-label>
-          <input matInput [type]="hide ? 'password' : 'text'" type="password" id="passsword" formControlName="password">
-          <div mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-          </div>
-        </mat-form-field>
-        <button type="submit">Entrar</button>
-        <div class="registro">
-          <a routerLink="/registro">Registrarse</a>
-        </div>
-      </form>
+<div class="login-container">
+  
+  <div class="login-card">
+    
+    <div class="logo-wrapper">
+      <img src="assets/fondo.png" alt="Logo de la aplicación" class="app-logo" />
     </div>
-</section>
+
+    <div class="text-center mb-6">
+      <h2 class="text-2xl font-bold text-gray-800">Bienvenido</h2>
+      <p class="text-gray-500 text-sm">Ingresa a tu cuenta para continuar</p>
+    </div>
+
+    <form [formGroup]="Formulario" (ngSubmit)="onSubmit()" class="login-form">
+      
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Usuario</mat-label>
+        <input matInput formControlName="usuario" type="text" id="usuario" placeholder="Ej. admin" />
+        <mat-icon matSuffix>person_outline</mat-icon> </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Contraseña</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" id="password">
+        <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Ocultar contraseña'" [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <button type="submit" class="login-btn" mat-ripple [disabled]="Formulario.invalid">
+        Entrar
+      </button>
+
+      <div class="footer-links">
+        <span class="text-gray-500">¿No tienes una cuenta?</span>
+        <a routerLink="/registro" class="register-link">Regístrate aquí</a>
+      </div>
+
+    </form>
+  </div>
+</div>

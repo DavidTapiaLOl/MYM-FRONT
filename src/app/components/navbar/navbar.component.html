@@ -1,35 +1,63 @@
+<nav class="navbar">
+  <div class="nav-container">
+    
+    <div class="nav-links">
+      <a routerLink="/dashboard" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}" class="nav-item">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-1">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+        </svg>
+        Dashboard
+      </a>
 
- <nav class="navbar">
-    <div class="container-fluid">
-        <button [matMenuTriggerFor]="menu" class="flex items-center gap-2">
-          
-          @if (auth.get_user().foto_perfil) {
-              <img [src]="auth.get_user().foto_perfil" 
-                   class="w-10 h-10 rounded-full object-cover border border-white"
-                   alt="Foto de perfil">
-          } @else {
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-filled" width="40" height="40" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                <path d="M12 2a5 5 0 1 1 -5 5l.005 -.217a5 5 0 0 1 4.995 -4.783z" stroke-width="0" fill="currentColor" />
-                <path d="M14 14a5 5 0 0 1 5 5v1a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-1a5 5 0 0 1 5 -5h4z" stroke-width="0" fill="currentColor" />
-              </svg>
-          }
+      <a routerLink="/ingreso" routerLinkActive="active-link" class="nav-item">
+        Ingresos
+      </a>
 
-          <span class="ml-2">{{auth.get_user().usuario}}</span>
-        </button>
-      <ul class="nav">
-        <li class="">
-          <a routerLinkActive="active" class="nav-link" routerLink="/ingreso" role="button">INGRESOS</a>
-        </li>
-        <li class="">
-          <a routerLinkActive="active" class="nav-link" routerLink="/egreso" role="button">EGRESOS</a>
-        </li>
-      </ul>
+      <a routerLink="/egreso" routerLinkActive="active-link" class="nav-item">
+        Egresos
+      </a>
     </div>
-  </nav>
-  <mat-menu #menu="matMenu">
-    <a routerLink="/dashboard" mat-menu-item>Inicio</a>
-    <a routerLink="/perfil" mat-menu-item>Edita tu perfil</a>
-    <button mat-menu-item (click)="auth.sign_out()">Cerrar Sesión</button>
-  </mat-menu>
 
+    <div class="user-section">
+      
+      <div class="separator"></div>
+
+      <button [matMenuTriggerFor]="menu" class="user-btn">
+        
+        <div class="user-info">
+            <span class="user-name">{{auth.get_user().usuario}}</span>
+            <span class="user-role">Configuración</span>
+        </div>
+
+        @if (auth.get_user().foto_perfil) {
+          <img [src]="auth.get_user().foto_perfil" class="avatar-img" alt="Foto">
+        } @else {
+          <div class="avatar-placeholder">
+            <span class="initial">{{auth.get_user().usuario?.charAt(0) | uppercase}}</span>
+          </div>
+        }
+        
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="arrow-icon">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+        </svg>
+      </button>
+    </div>
+
+  </div>
+</nav>
+
+<mat-menu #menu="matMenu" class="custom-menu">
+  <button mat-menu-item routerLink="/dashboard">
+    <mat-icon>dashboard</mat-icon>
+    <span>Inicio</span>
+  </button>
+  <button mat-menu-item routerLink="/perfil">
+    <mat-icon>person</mat-icon>
+    <span>Mi Perfil</span>
+  </button>
+  <mat-divider></mat-divider>
+  <button mat-menu-item (click)="auth.sign_out()">
+    <mat-icon color="warn">logout</mat-icon>
+    <span>Cerrar Sesión</span>
+  </button>
+</mat-menu>

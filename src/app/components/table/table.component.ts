@@ -34,12 +34,12 @@ export class TableComponent {
    @Output() clicktabla = new EventEmitter<any>
    @Input() filters: any = [];
    @Input({ required: true }) data: any[] = [];
+   @Output() verDetalle = new EventEmitter<any>();
 
    @ViewChild(MatSort) sort!: MatSort;
    @ViewChild(MatPaginator) paginator!: MatPaginator;
 
    async ngOnChanges(changes: SimpleChanges) {
-      // --- CORRECCIÓN: Validación de datos ---
       const incomingData = changes['data']?.currentValue;
       
       // Si incomingData es un arreglo real, lo usamos. Si es null, undefined o un error, usamos []
@@ -119,4 +119,8 @@ export class TableComponent {
    eliminarElemento(elemento:any){
     this.eliminar.emit(elemento);
    }
+
+   verElemento(row: any) {
+    this.verDetalle.emit(row);
+  }
 }

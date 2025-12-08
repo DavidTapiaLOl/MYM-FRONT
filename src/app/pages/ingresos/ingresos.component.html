@@ -1,16 +1,38 @@
-<section>
-    <div class="header">
-        <h1>Ingresos</h1>
-        <button mat-flat-button color="primary" (click)="Editardialog()">
-            <i-tabler name="plus" class="icon-20"></i-tabler> Agregar Ingreso
-        </button>
+<div class="page-container">
+  
+  <div class="content-card">
+    
+    <div class="card-header">
+      <div class="header-text">
+        <h1 class="page-title">Gestión de Ingresos</h1>
+        <p class="page-subtitle">Controla tus entradas de dinero y fuentes de ganancia</p>
+      </div>
+      
+      <button class="add-btn" mat-ripple (click)="Editardialog()">
+        <i-tabler name="plus" class="icon-20"></i-tabler>
+        <span>Nuevo Ingreso</span>
+      </button>
     </div>
 
-    <div class="mt-4">
+    <div class="table-content">
+      <div class="table-wrapper">
         <ui-table 
             [data]="data" 
             (clicktabla)="Editardialog($event)" 
             (eliminar)="eliminar($event)">
         </ui-table>
+      </div>
+
+      @if (!data || data.length === 0) {
+        <div class="empty-state">
+          <div class="empty-icon">
+            <i-tabler name="currency-dollar-off" class="icon-48"></i-tabler>
+          </div>
+          <span class="text-gray-500 font-medium">No hay ingresos registrados aún.</span>
+          <span class="text-sm text-gray-400">Haz clic en "Nuevo Ingreso" para comenzar.</span>
+        </div>
+      }
     </div>
-</section>
+
+  </div>
+</div>

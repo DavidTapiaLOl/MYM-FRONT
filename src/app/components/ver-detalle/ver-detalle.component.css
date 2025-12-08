@@ -1,0 +1,126 @@
+
+.receipt-card {
+  background-color: #fff;
+  max-width: 450px;
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden; 
+}
+
+
+.receipt-header {
+  background-color: #f9fafb;
+  padding: 30px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-bottom: 1px dashed #e5e7eb; 
+}
+
+.icon-circle {
+  width: 56px;
+  height: 56px;
+  background-color: #ecfdf5; 
+  color: #059669;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+}
+
+.receipt-header h3 {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.big-amount {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #111827;
+  margin-top: 8px;
+  font-family: monospace; 
+  letter-spacing: -0.05em;
+}
+
+
+.receipt-body {
+  padding: 24px !important;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; 
+  gap: 20px 16px;
+  max-height: 60vh; 
+}
+
+.data-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  &.full-row {
+    grid-column: span 2; 
+    background: #f9fafb;
+    padding: 10px;
+    border-radius: 8px;
+  }
+}
+
+.label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: #9ca3af;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.text-value {
+  font-size: 1rem;
+  color: #374151;
+  font-weight: 500;
+  word-wrap: break-word;
+}
+
+.date-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #f3f4f6;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.status-pill {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+
+  &.active {
+    background-color: #dcfce7;
+    color: #15803d;
+  }
+  &.inactive {
+    background-color: #f3f4f6;
+    color: #6b7280;
+  }
+}
+
+
+.receipt-footer {
+  padding: 20px;
+  border-top: 1px solid #f3f4f6;
+}
+
+
+.w-full { width: 100%; }
+.icon-32 { width: 32px; height: 32px; }
+.icon-14 { width: 14px; height: 14px; }

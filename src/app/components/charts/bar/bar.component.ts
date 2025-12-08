@@ -7,7 +7,7 @@ import { ChartsService } from '../../../services/charts.service';
 @Component({
   selector: 'bar-chart',
   templateUrl: './bar.component.html',
-  styleUrl: './bar.component.scss'
+  styleUrl: './bar.component.scss' // Asegúrate que este archivo exista, o usa .css
 })
 export class BarChart implements AfterViewInit, OnChanges, OnDestroy {
    private _charts: ChartsService = inject(ChartsService);
@@ -16,7 +16,6 @@ export class BarChart implements AfterViewInit, OnChanges, OnDestroy {
    
    random = (Math.random() * 10).toFixed(4);
    
-   // Cambiamos a any[] para aceptar la estructura dinámica del backend
    @Input({ required: true }) data: any[] = [];
    new_data: any[] = [];
 
@@ -27,10 +26,8 @@ export class BarChart implements AfterViewInit, OnChanges, OnDestroy {
    ngOnChanges(changes: SimpleChanges): void {
       this.new_data = changes["data"]?.currentValue ?? this.new_data;
       
-      // Si la gráfica ya existe, la reiniciamos con los nuevos datos
-      if (this.root) {
-         this.initChart(); 
-      }
+   
+      this.initChart();
    }
 
    ngOnDestroy(): void {
@@ -44,14 +41,15 @@ export class BarChart implements AfterViewInit, OnChanges, OnDestroy {
    }
 
    private initChart() {
-      // 1. Si no hay datos, no hacemos nada para evitar errores
+     
       if (!this.new_data || this.new_data.length === 0) {
          return;
       }
 
-      // 2. Aseguramos que el HTML exista
+     
       const chartDiv = document.getElementById('bar-chart' + this.random);
       if (!chartDiv) {
+    
          setTimeout(() => this.initChart(), 100);
          return;
       }
@@ -73,7 +71,6 @@ export class BarChart implements AfterViewInit, OnChanges, OnDestroy {
             })
          );
 
-         // Leyenda
          let legend = chart.children.push(
             am5.Legend.new(this.root, {
                centerX: am5.p50,
@@ -89,7 +86,6 @@ export class BarChart implements AfterViewInit, OnChanges, OnDestroy {
 
          yRenderer.grid.template.set("location", 1);
 
-         // Eje Y: Categorías (Conceptos)
          let yAxis = chart.yAxes.push(
             am5xy.CategoryAxis.new(this.root, {
                categoryField: "category",
@@ -100,7 +96,6 @@ export class BarChart implements AfterViewInit, OnChanges, OnDestroy {
 
          yAxis.data.setAll(this.new_data);
 
-         // Eje X: Valores (Monto)
          let xAxis = chart.xAxes.push(
             am5xy.ValueAxis.new(this.root, {
                min: 0,
@@ -111,8 +106,6 @@ export class BarChart implements AfterViewInit, OnChanges, OnDestroy {
             })
          );
 
-         // Generación Dinámica de Series (Periodos)
-         // Recorremos las llaves del primer objeto (ej: 'Semanal', 'Mensual') e ignoramos 'category'
          if (this.new_data.length > 0) {
              let firstItem = this.new_data[0];
              Object.keys(firstItem).forEach(key => {
@@ -129,13 +122,13 @@ export class BarChart implements AfterViewInit, OnChanges, OnDestroy {
 
    private createSeries(chart: am5xy.XYChart, name: string, fieldName: string, xAxis: any, yAxis: any) {
        let series = chart.series.push(am5xy.ColumnSeries.new(this.root, {
-           name: name, // Nombre que aparece en la leyenda (ej. Semanal)
+           name: name,
            xAxis: xAxis,
            yAxis: yAxis,
            valueXField: fieldName,
            categoryYField: "category",
            sequencedInterpolation: true,
-           stacked: true, // ACTIVAMOS EL MODO APILADO
+           stacked: true,
            tooltip: am5.Tooltip.new(this.root, {
                pointerOrientation: "horizontal",
                labelText: "[bold]{name}[/]\n{categoryY}: ${valueX}"

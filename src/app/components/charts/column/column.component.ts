@@ -101,7 +101,6 @@ export class ColumnChart {
          series.appear(1000);
          chart.appear(1000, 100);
 
-         // chart.get("colors")?.set("colors", this._charts.colors);
    }
 
    ngOnDestroy() {

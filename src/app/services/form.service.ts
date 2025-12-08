@@ -144,18 +144,17 @@ export class FormService {
 
          if (!confirm) return this._master.snack('info', 'No se han realizado cambios.');
 
-         // ... (validación de invalid control) ...
+      
 
          const response:any = await this._provider.request(method, archivo,opcion, params);
          const success = response.estatus == true;
          
          this.ejecutar.next();
 
-         // CORRECCIÓN: Pasamos 'response.mensaje' a la alerta
+      
          return this._master.snack(success ? 'success' : 'error', response.mensaje);
 
       } catch (error) {
-         // También mejoramos el catch para ver errores de red en consola
          console.error("Error en FormService:", error);
          return this._master.snack('error', 'Error de conexión o servidor');
       } finally {

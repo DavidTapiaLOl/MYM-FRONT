@@ -1,0 +1,48 @@
+<div class="modal-header">
+  <h2 mat-dialog-title class="m-0 text-xl font-bold text-gray-800">
+    Nuevo {{ data.titulo }}
+  </h2>
+  <button mat-icon-button (click)="cerrar()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content class="mat-typography custom-content">
+  
+  <p class="text-gray-500 mb-4 text-sm">
+    Ingresa el nombre para agregar un nuevo registro a la lista de <strong>{{ data.titulo }}s</strong>.
+  </p>
+  
+  <div class="w-full py-2">
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Nombre del {{ data.titulo }}</mat-label>
+      
+      <input matInput 
+             [formControl]="nombreControl" 
+             placeholder="Ej. Pago Extra, Anual, Transferencia..." 
+             (keyup.enter)="guardar()"
+             autocomplete="off">
+             
+      <mat-icon matSuffix class="text-gray-400">edit</mat-icon>
+      
+      <mat-error *ngIf="nombreControl.hasError('required')">
+        El nombre es obligatorio
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="custom-actions">
+  <button mat-button (click)="cerrar()" class="text-gray-600">
+    Cancelar
+  </button>
+  
+  <button mat-flat-button 
+          color="primary" 
+          (click)="guardar()" 
+          [disabled]="nombreControl.invalid || loading"
+          class="save-btn">
+    {{ loading ? 'Guardando...' : 'Guardar' }}
+  </button>
+</mat-dialog-actions>

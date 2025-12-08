@@ -1,28 +1,126 @@
-section {
-  background-color: #BDDEC6;
-  padding: 5%;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  width: 100%;
 
+.page-container {
+  width: 100%;
+  min-height: calc(100vh - 70px); 
+  background-color: #f3f4f6;
+  padding: 2rem;
+  box-sizing: border-box;
 }
 
-section button {
-  background-color: #126AD1;
+
+.content-card {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  max-width: 1200px; 
+  margin: 0 auto;
+}
+
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; 
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937; 
+  margin: 0;
+  line-height: 1.2;
+}
+
+.page-subtitle {
+  color: #6b7280; 
+  margin-top: 0.25rem;
+  font-size: 0.95rem;
+}
+
+
+.add-btn {
+  background-color: #059669; 
   color: white;
   border: none;
-  padding: 5px 20px;
-  font-size: 14pt;
-  cursor: pointer;
-  width: 250px;
-  height: 50px;
-  border-radius: 10px;
-
-}
-section .egreso {
-  width: 100%;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
   display: flex;
-  justify-content: end;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px -1px rgba(5, 150, 105, 0.3);
+  transition: all 0.2s ease;
 }
 
+.add-btn:hover {
+  background-color: #047857;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px -1px rgba(5, 150, 105, 0.4);
+}
+
+
+.tab-content {
+  padding-top: 1.5rem;
+}
+
+
+.info-alert {
+  background-color: #eff6ff; 
+  border-left: 4px solid #3b82f6; 
+  padding: 1rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  color: #1e40af; 
+  margin-bottom: 1.5rem;
+}
+
+.icon-box {
+  display: flex;
+  align-items: center;
+  margin-top: 2px;
+}
+
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid #f3f4f6;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  border: 1px dashed #e5e7eb;
+  margin-top: 1rem;
+}
+
+
+@media (max-width: 640px) {
+  .page-container {
+    padding: 1rem;
+  }
+  
+  .content-card {
+    padding: 1.5rem;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: stretch; 
+  }
+  
+  .add-btn {
+    justify-content: center;
+    width: 100%;
+  }
+}

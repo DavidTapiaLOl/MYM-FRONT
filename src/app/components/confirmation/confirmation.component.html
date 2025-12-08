@@ -1,10 +1,22 @@
-<h2 mat-dialog-title>Confirmación</h2>
+<div class="confirm-container">
+  
+  <div class="icon-wrapper">
+    <i-tabler name="help" class="icon-32"></i-tabler>
+  </div>
 
-<mat-dialog-content>
-   ¿Deseas proceder?
-</mat-dialog-content>
+  <h2 class="dialog-title">Confirmación</h2>
 
-<mat-dialog-actions align="end" class="flex gap-x-2">
-   <button [mat-dialog-close]="false" class="ui-button-secondary">Cancelar</button>
-   <button [mat-dialog-close]="true"  class="ui-button-primary" cdkFocusInitial>Confirmar</button>
-</mat-dialog-actions>
+  <p class="dialog-message">
+    ¿Estás seguro de que deseas proceder con esta acción?
+  </p>
+
+  <div class="actions-wrapper">
+    <button mat-button [mat-dialog-close]="false" class="btn-cancel">
+      Cancelar
+    </button>
+    <button mat-flat-button [mat-dialog-close]="true" cdkFocusInitial class="btn-confirm">
+      Confirmar
+    </button>
+  </div>
+
+</div>

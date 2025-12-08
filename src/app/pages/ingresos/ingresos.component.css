@@ -1,20 +1,112 @@
-body {
-  background-color: #BDDEC6;
+
+.page-container {
+  width: 100%;
+  min-height: calc(100vh - 70px);
+  background-color: #f3f4f6;
+  padding: 2rem;
+  box-sizing: border-box;
 }
 
-section button {
-  background-color: #126AD1;
+.content-card {
+  background: white;
+  border-radius: 16px;
+  padding: 2.5rem; 
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.page-subtitle {
+  color: #6b7280;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+}
+
+
+.add-btn {
+  background-color: #059669; 
   color: white;
   border: none;
-  padding: 5px 20px;
-  font-size: 14pt;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   cursor: pointer;
-  width: 250px;
-  height: 50px;
-  border-radius: 10px;
+  box-shadow: 0 4px 6px -1px rgba(5, 150, 105, 0.3);
+  transition: all 0.2s ease;
 }
-section .ingreso button{
-  margin-left: 1000px;
-  margin-top: 100px;
 
+.add-btn:hover {
+  background-color: #047857;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px -1px rgba(5, 150, 105, 0.4);
+}
+
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid #f3f4f6; 
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  background-color: #f9fafb;
+  border-radius: 12px;
+  border: 2px dashed #e5e7eb;
+  margin-top: 1rem;
+  gap: 0.5rem;
+}
+
+.empty-icon {
+  color: #9ca3af;
+  margin-bottom: 0.5rem;
+  width: 48px; 
+  height: 48px;
+}
+
+
+@media (max-width: 640px) {
+  .page-container {
+    padding: 1rem;
+  }
+  
+  .content-card {
+    padding: 1.5rem;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .add-btn {
+    justify-content: center;
+    width: 100%;
+  }
 }

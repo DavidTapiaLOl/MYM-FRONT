@@ -1,93 +1,121 @@
-<!-- <img src="assets/registro.png" alt="fondo"> -->
-<section>
-  <!-- <img src="assets/fondo.png" alt=""> -->
-  <div class="formulario">
-
-    <div class="flex flex-col items-center mb-6">
-        <div class="relative w-32 h-32 mb-2 overflow-hidden rounded-full border-4 border-gray-200">
-            @if (previewUrl) {
-                <img [src]="previewUrl" class="w-full h-full object-cover">
-            } @else {
-                <div class="flex items-center justify-center w-full h-full bg-gray-100 text-gray-400">
-                    <i-tabler name="user" class="icon-48"></i-tabler>
-                </div>
-            }
-        </div>
-        <button type="button" mat-stroked-button (click)="fileInput.click()">
-            {{ loadingFoto ? 'Subiendo...' : 'Subir Foto' }}
-        </button>
-        <input #fileInput type="file" hidden (change)="onFileSelected($event)" accept="image/*">
+<div class="register-container">
+  
+  <div class="register-card">
+    
+    <div class="text-center mb-6">
+      <h2 class="text-2xl font-bold text-gray-800">Crear Cuenta</h2>
+      <p class="text-gray-500 text-sm">Completa tus datos para unirte</p>
     </div>
-    <form [ngClass]="layout.grid(sc)" #sc [formGroup]="Formulario"  (ngSubmit)="submit()">
-       <mat-form-field appearance="outline">
-        <mat-label>Nombre</mat-label>
-        <input matInput  type="text" formControlName="nombre" />
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Apellido Paterno</mat-label>
-        <input matInput type="text" id="apellido_paterno" formControlName="apellido_paterno"/>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Apellido Materno</mat-label>
-        <input matInput type="text" id="apellido_materno" formControlName="apellido_materno" />
-      </mat-form-field>
-      <!-- <mat-form-field appearance="outline">
-        <input matInput type="date" id="fecha_nacimiento" formControlName="fecha_nacimiento" placeholder="Fecha de Nacimiento" />
-      </mat-form-field> -->
-      <mat-form-field appearance="outline">
-        <mat-label>Fecha Nacimiento</mat-label>
-        <input matInput [matDatepicker]="fecha_nacimiento" formControlName="fecha_nacimiento"/>
-        <mat-datepicker-toggle matIconSuffix [for]="fecha_nacimiento"></mat-datepicker-toggle>
-        <mat-datepicker #fecha_nacimiento></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Correo</mat-label>
-        <input matInput type="email" id="correo" formControlName="correo" />
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Telefono</mat-label>
-        <input matInput type="tel" id="telefono" formControlName="telefono"  />
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Usuario</mat-label>
-        <input matInput type="text" id="usuario" formControlName="usuario"/>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Contraseña</mat-label>
-        <input matInput [type]="hide ? 'password' : 'text'"  type="password" id="passsword" formControlName="password">
-        <div mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+
+    <div class="photo-upload-section">
+      <div class="avatar-wrapper" (click)="fileInput.click()">
+        @if (previewUrl) {
+            <img [src]="previewUrl" class="avatar-img">
+        } @else {
+            <div class="avatar-placeholder">
+                <i-tabler name="camera" class="icon-32"></i-tabler>
+                <span class="text-xs mt-1">Subir Foto</span>
+            </div>
+        }
+        <div class="add-badge">
+            <i-tabler name="plus" class="icon-12"></i-tabler>
         </div>
-      </mat-form-field>
-      <!-- <mat-form-field appearance="outline">
-        <input matInput type="password" id="password" formControlName="password" placeholder="Contraseña" />
-      </mat-form-field> -->
-      <mat-form-field appearance="outline">
-        <mat-label>Pais</mat-label>
-        <mat-select name="tbl_pais_id" id="pais" formControlName="tbl_pais_id" >
-          @for (pais of listas?.['pais']; track $index) {
-            <mat-option [value]="pais.id">{{pais.nombre}}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Estado</mat-label>
-        <mat-select name="tbl_estado_id" id="estado" formControlName="tbl_estado_id">
-          @for (estado of listas?.['estado']; track $index) {
-            <mat-option [value]="estado.id">{{estado.nombre}}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Municipio</mat-label>
-        <mat-select name="tbl_municipio_id" id="municipio" formControlName="tbl_municipio_id" >
-          @for (municipio of listas?.['municipio']; track $index) {
-            <mat-option [value]="municipio.id">{{municipio.nombre}}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-      <button type="submit">Registrarse</button>
+      </div>
+      <input #fileInput type="file" hidden (change)="onFileSelected($event)" accept="image/*">
+    </div>
+
+    <form [formGroup]="Formulario" (ngSubmit)="submit()">
+      
+      <div class="form-grid">
+        
+        <mat-form-field appearance="outline" class="col-span-full">
+            <mat-label>Nombre(s)</mat-label>
+            <input matInput formControlName="nombre" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Apellido Paterno</mat-label>
+            <input matInput formControlName="apellido_paterno" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Apellido Materno</mat-label>
+            <input matInput formControlName="apellido_materno" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Fecha de Nacimiento</mat-label>
+            <input matInput [matDatepicker]="fecha_nacimiento" formControlName="fecha_nacimiento" required/>
+            <mat-datepicker-toggle matIconSuffix [for]="fecha_nacimiento"></mat-datepicker-toggle>
+            <mat-datepicker #fecha_nacimiento></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Teléfono</mat-label>
+            <input matInput type="tel" formControlName="telefono" required/>
+            <mat-icon matSuffix>phone</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="col-span-full">
+            <mat-label>Correo Electrónico</mat-label>
+            <input matInput type="email" formControlName="correo" required/>
+            <mat-icon matSuffix>email</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Usuario</mat-label>
+            <input matInput formControlName="usuario" required/>
+            <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Contraseña</mat-label>
+            <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" required>
+            <button type="button" mat-icon-button matSuffix (click)="hide = !hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+        </mat-form-field>
+
+        <div class="location-group col-span-full">
+            <mat-form-field appearance="outline">
+                <mat-label>País</mat-label>
+                <mat-select formControlName="tbl_pais_id">
+                    @for (pais of listas?.['pais']; track $index) {
+                        <mat-option [value]="pais.id">{{pais.nombre}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Estado</mat-label>
+                <mat-select formControlName="tbl_estado_id">
+                    @for (estado of listas?.['estado']; track $index) {
+                        <mat-option [value]="estado.id">{{estado.nombre}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Municipio</mat-label>
+                <mat-select formControlName="tbl_municipio_id">
+                    @for (municipio of listas?.['municipio']; track $index) {
+                        <mat-option [value]="municipio.id">{{municipio.nombre}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+      </div>
+
+      <button type="submit" class="register-btn" mat-ripple [disabled]="Formulario.invalid">
+        Crear Cuenta
+      </button>
+
+      <div class="footer-links">
+        <span class="text-gray-500">¿Ya tienes cuenta?</span>
+        <a routerLink="/login" class="login-link">Inicia Sesión</a>
+      </div>
+
     </form>
   </div>
-</section>
-
+</div>

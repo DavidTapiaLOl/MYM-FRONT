@@ -1,46 +1,100 @@
-<section>
-  <!-- TARJETAS DE TOTALES -->
-  <div class="sumascontainer">
-    <div class="egreso">-${{sumas?.egreso}}</div>
-    <div class="ingreso">${{sumas?.ingreso}}</div>
+<div class="dashboard-container">
+  
+  <header class="mb-8">
+    <h2 class="text-3xl font-bold text-gray-800">Resumen Financiero</h2>
+    <p class="text-gray-500">Vista general de tus movimientos y métricas</p>
+  </header>
+
+  <div class="kpi-grid mb-8">
+    <div class="kpi-card income">
+      <div class="icon-wrapper">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" />
+        </svg>          
+      </div>
+      <div class="kpi-info">
+        <span class="label">Ingresos Totales</span>
+        <span class="value text-green-600">+${{ sumas?.ingreso | number:'1.2-2' }}</span>
+      </div>
+    </div>
+
+    <div class="kpi-card expense">
+      <div class="icon-wrapper">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75" />
+        </svg>
+      </div>
+      <div class="kpi-info">
+        <span class="label">Egresos Totales</span>
+        <span class="value text-red-600">-${{ sumas?.egreso | number:'1.2-2' }}</span>
+      </div>
+    </div>
+
+    <div class="kpi-card balance">
+      <div class="icon-wrapper">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3" />
+        </svg>
+      </div>
+      <div class="kpi-info">
+        <span class="label">Balance Actual</span>
+        <span class="value text-gray-800">${{ (sumas?.ingreso - sumas?.egreso) | number:'1.2-2' }}</span>
+      </div>
+    </div>
   </div>
 
-  <!-- 1. TABLA DE RELACIÓN MENSUAL (Ingresos vs Egresos) -->
-  <h1 class="mt-6 mb-2 text-xl font-bold text-gray-700">Relación Mensual</h1>
-  <div class="overflow-x-auto bg-white rounded-lg shadow-md mb-8">
-    <table class="w-full text-sm text-left text-gray-500">
-      <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-        <tr>
-          <th scope="col" class="px-6 py-3">Mes</th>
-          <th scope="col" class="px-6 py-3 text-green-600">Ingresos</th>
-          <th scope="col" class="px-6 py-3 text-red-600">Egresos</th>
-          <th scope="col" class="px-6 py-3">Balance</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (item of tablaMensual; track $index) {
-          <tr class="bg-white border-b hover:bg-gray-50">
-            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{{ item.mes }}</td>
-            <td class="px-6 py-4 text-green-600 font-bold">+ ${{ item.ingreso }}</td>
-            <td class="px-6 py-4 text-red-600 font-bold">- ${{ item.egreso }}</td>
-            <td class="px-6 py-4 font-bold" [class.text-green-600]="item.balance >= 0" [class.text-red-600]="item.balance < 0">
-              ${{ item.balance }}
-            </td>
-          </tr>
-        } @empty {
-          <tr><td colspan="4" class="px-6 py-4 text-center">No hay datos aún.</td></tr>
-        }
-      </tbody>
-    </table>
+  <div class="main-grid mb-8">
+    
+    <div class="card chart-section">
+      <div class="card-header">
+        <h3 class="text-lg font-bold text-gray-700">Gasto Mensual Estimado</h3>
+      </div>
+      <div class="chart-wrapper">
+        <bar-chart [data]="datosGrafica"></bar-chart>
+      </div>
+    </div>
+
+    <div class="card table-section">
+      <div class="card-header">
+        <h3 class="text-lg font-bold text-gray-700">Relación Mensual</h3>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left text-gray-500">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0">
+            <tr>
+              <th scope="col" class="px-4 py-3">Mes</th>
+              <th scope="col" class="px-4 py-3 text-right">Ingreso</th>
+              <th scope="col" class="px-4 py-3 text-right">Egreso</th>
+              <th scope="col" class="px-4 py-3 text-right">Balance</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of tablaMensual; track $index) {
+              <tr class="border-b hover:bg-gray-50 transition-colors">
+                <td class="px-4 py-3 font-medium text-gray-900">{{ item.mes }}</td>
+                <td class="px-4 py-3 text-right text-green-600 font-semibold">+{{ item.ingreso | number }}</td>
+                <td class="px-4 py-3 text-right text-red-500 font-semibold">-{{ item.egreso | number }}</td>
+                <td class="px-4 py-3 text-right font-bold" 
+                    [class.text-green-600]="item.balance >= 0" 
+                    [class.text-red-600]="item.balance < 0">
+                  {{ item.balance | number }}
+                </td>
+              </tr>
+            } @empty {
+              <tr><td colspan="4" class="px-4 py-8 text-center text-gray-400">Sin datos registrados</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
-  <!-- 2. GRÁFICA DE EGRESOS POR CONCEPTO -->
-  <h1 class="mt-6 mb-2 text-xl font-bold text-gray-700">Egresos por Concepto</h1>
-  <div class="w-full bg-white rounded-lg shadow-md p-4 mb-8" style="height: 400px;"> <!-- Altura fija obligatoria -->
-      <bar-chart [data]="datosGrafica"></bar-chart>
+  <div class="card w-full">
+    <div class="card-header border-b border-gray-100 pb-4 mb-4">
+      <h3 class="text-lg font-bold text-gray-700">Últimos Movimientos</h3>
+    </div>
+    <ui-table style="width: 100%;" (clicktabla)="click($event)" (verDetalle)="verDetalleDialog($event)" [data]="data"></ui-table>
   </div>
 
-  <!-- 3. TABLA DE MOVIMIENTOS RECIENTES -->
-  <h1>Movimientos Recientes</h1>
-  <ui-table style="width: 100%;" (clicktabla)="click($event)" [data]="data"></ui-table>
-</section>
+</div>

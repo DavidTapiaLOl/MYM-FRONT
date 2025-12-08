@@ -1,0 +1,61 @@
+<div class="receipt-card">
+  
+  <div class="receipt-header">
+    <div class="icon-circle">
+      <i-tabler name="receipt" class="icon-32"></i-tabler>
+    </div>
+    <h3>Detalle del Movimiento</h3>
+    
+    @for (key of dataKeys; track key) {
+        @if(isMoney(key)) {
+            <div class="big-amount">
+                {{ data[key] | currency }}
+            </div>
+        }
+    }
+  </div>
+
+  <div class="divider">
+    <div class="notch-l"></div>
+    <div class="notch-r"></div>
+  </div>
+
+  <mat-dialog-content class="receipt-body">
+    
+    @for (key of dataKeys; track key) {
+      
+      @if (!isMoney(key)) {
+          
+        <div class="data-row" [class.full-row]="isLongText(key)">
+            <span class="label">{{ cleanLabel(key) | titlecase }}</span>
+            
+            <div class="value-container">
+                
+                @if (isDate(key)) {
+                    <div class="date-badge">
+                        <i-tabler name="calendar" class="icon-14"></i-tabler>
+                        {{ data[key] | date:'mediumDate' }}
+                    </div>
+                }
+                @else if (isBoolean(key)) {
+                    <span class="status-pill" [ngClass]="data[key] == 1 ? 'active' : 'inactive'">
+                        {{ data[key] == 1 ? 'Sí' : 'No' }}
+                    </span>
+                }
+                @else {
+                    <span class="text-value">{{ data[key] }}</span>
+                }
+            </div>
+        </div>
+
+      }
+    }
+  </mat-dialog-content>
+
+  <div class="receipt-footer">
+    <button mat-flat-button color="primary" class="w-full" (click)="cerrar()">
+        Cerrar
+    </button>
+  </div>
+
+</div>

@@ -26,6 +26,8 @@ import { UiSelectComponent } from './components/ui-select/ui-select.component';
 import * as TablerIcons from 'angular-tabler-icons/icons';
 import { BarChart } from './components/charts/bar/bar.component';
 import { FormularioIngresoComponent } from './components/formulario-ingreso/formulario-ingreso.component';
+import { AgregarItemComponent } from './components/agregar-item/agregar-item.component';
+import { VerDetalleComponent } from './components/ver-detalle/ver-detalle.component';
 
 
 
@@ -48,7 +50,9 @@ import { FormularioIngresoComponent } from './components/formulario-ingreso/form
     TableComponent,
     FilterComponent,
     UiSelectComponent,
-    BarChart
+    BarChart,
+    AgregarItemComponent,
+    VerDetalleComponent
 
 
 

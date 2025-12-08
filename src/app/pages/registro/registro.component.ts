@@ -72,30 +72,26 @@ export class RegistroComponent {
        return;
     }
 
-    // 1. Obtenemos los valores del formulario
+
     const datos = { ...this.Formulario.value };
 
-    // --- CORRECCIÓN CRÍTICA PARA MYSQL ---
-    // Si hay fecha, la convertimos a formato simple YYYY-MM-DD
     if (datos.fecha_nacimiento) {
         try {
-            // Convertimos a objeto Date y luego a string ISO, cortando la parte de la hora
+         
             datos.fecha_nacimiento = new Date(datos.fecha_nacimiento).toISOString().split('T')[0];
         } catch (e) {
             console.error('Error al formatear fecha', e);
         }
     }
-    // -------------------------------------
 
-    // 2. Enviamos la variable 'datos' corregida, NO el formulario crudo
     try {
         let registro: any = await this.auth.sign_up(datos);
         
         if (registro && registro.estatus) {
-            // Éxito
+            
             this.router.navigate(['/login']);
         } else {
-            // Error controlado del backend (opcional: mostrar alerta)
+            
             console.error('Error en registro:', registro);
             alert(registro?.mensaje || 'Error al registrar el usuario');
         }
