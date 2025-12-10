@@ -16,9 +16,6 @@ export declare type SnackTypes = 'success' | 'error' | 'info' | 'forbidden';
 export class SnackBarChart {
    data: { type: SnackTypes; message: string[] } = inject(MAT_SNACK_BAR_DATA);
 
-/*    ES: 'Ha ocurrido un error.',
-   ES: 'Proceso ejecutado con éxito.',
-   ES: 'No tienes permiso para realizar esta acción.', */
    info = {
       success: {
          icon: 'circle-check',

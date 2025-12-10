@@ -115,4 +115,17 @@ export class AuthService {
    /* decrypt(): any {
       return JSON.parse(atob(this.encrypt(this.get_token())));
    } */
+
+
+      update_user_session(nuevosDatos: any) {
+      // 1. Obtenemos el usuario actual guardado
+      const usuarioActual = this.get_user();
+      
+      // 2. Mezclamos los datos viejos con los nuevos
+      // (Los nuevos sobrescriben a los viejos)
+      const usuarioActualizado = { ...usuarioActual, ...nuevosDatos };
+
+      // 3. Guardamos de nuevo en LocalStorage
+      this._ls._set(utils.USER, usuarioActualizado);
+   }
 }

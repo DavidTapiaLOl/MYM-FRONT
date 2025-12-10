@@ -60,7 +60,6 @@ export class ProviderService {
       let url = utils.URL + "controller/" + archivo + ".php?opcion=" + opcion;
       //console.log(url, params);
 
-      // Ejemplo de URL: http://localhost/ws-template/public/get_users
       return new Promise<T>((resolve, reject) =>
          this._http
             .request<any>(method, url, {
@@ -69,17 +68,8 @@ export class ProviderService {
                params: method !== 'POST' ? this.params(params) : {},
             })
             .subscribe((response: any) => {
-              //console.log(response);
 
               resolve(response);
-
-               // Resuelve la promesa con los datos de la respuesta si no hay errores
-              //  if (!response.error) resolve(response.msg);
-              //  // Rechaza la promesa con el error si se encuentra un error en la respuesta
-              //  else {
-              //     this.snack('error', this.excep[response.error_code])
-              //     reject(response.error_code);
-              //  }
             })
       );
    }

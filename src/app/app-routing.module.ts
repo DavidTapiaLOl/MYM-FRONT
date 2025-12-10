@@ -13,14 +13,13 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
-    pathMatch: 'prefix'
-
+    redirectTo: 'dashboard', 
+    pathMatch: 'full'    
   },
   {
     path: 'login',
     component: LoginComponent,
-    canActivate:[noauthGuard]
+    canActivate: [noauthGuard] 
   },
   {
     path: 'registro',
@@ -31,7 +30,6 @@ const routes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
     canActivate: [authGuard]
-
   },
   {
     path: 'ingreso',
@@ -40,25 +38,23 @@ const routes: Routes = [
   },
   {
     path: 'egreso',
-    component:EgresosComponent,
+    component: EgresosComponent,
     canActivate: [authGuard]
   },
   {
-    path:'perfil',
+    path: 'perfil',
     component: PerfilComponent,
     canActivate: [authGuard]
   },
   {
     path: '**',
     redirectTo: 'login',
-
   }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
-
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
 })
 export class AppRoutingModule { }

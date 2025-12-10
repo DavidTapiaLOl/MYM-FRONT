@@ -2,7 +2,7 @@
 .login-container {
   height: 100vh;
   width: 100vw;
-  background: linear-gradient(135deg, #f0fdf4 0%, #f3f4f6 100%); /* Verde menta muy pálido a gris */
+  background: linear-gradient(135deg, #f0fdf4 0%, #f3f4f6 100%); 
   display: flex;
   justify-content: center;
   align-items: center;

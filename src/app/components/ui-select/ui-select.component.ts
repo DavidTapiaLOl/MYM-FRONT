@@ -1,6 +1,4 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MaterialModule } from '../../material.module';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { LayoutService } from '../../services/layout.service';
 
@@ -43,7 +41,6 @@ export class UiSelectComponent {
 
    select(event: any) {
       this._control.patchValue(event);
-      //console.log(this._control.parent?.value);
 
    }
 

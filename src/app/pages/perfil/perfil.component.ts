@@ -45,7 +45,6 @@ export class PerfilComponent {
 
   async ngOnInit() {
     let info: any = await this.provider.request('POST', 'registro', 'GetId', { id: this.auth.get_user().id })
-    //console.log(info);
 
     this.listas['pais'] = await this.provider.request('POST', 'pais', 'GetAll')
     this.listas['estado'] = await this.provider.request('POST', 'estado', 'GetIdxPais',{id: info.tbl_pais_id})
@@ -53,6 +52,9 @@ export class PerfilComponent {
 
     await this.form.patch(info, this.Formulario)
 
+    if (info.foto_perfil) {
+        this.previewUrl = info.foto_perfil;
+    }
   }
 
 
@@ -72,19 +74,28 @@ export class PerfilComponent {
       }
     }
   }
+  
   async submit() {
-    this.provider.request('POST', 'registro', 'Update', this.Formulario.value)
+    const response: any = await this.provider.request('POST', 'registro', 'Update', this.Formulario.value);
 
-    if((await this.provider.request('POST', 'registro', 'Update', this.Formulario.value)as any).estatus){
-      this.snackbar.open("Cambios realizdos con exitio")
-      this.router.navigate(['/dashboard'])
+    if (response.estatus) {
+      
+      this.auth.update_user_session(this.Formulario.value);
+
+      this.snackbar.open("Cambios realizados con éxito", "", {
+        duration: 3000, // <--- ESTO HARÁ QUE SE CIERRE A LOS 3 SEGUNDOS
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom'
+      });
+
+      this.router.navigate(['/dashboard']);
     }
   }
 
 
 
 
-  // Funcion para responsividad
+
   @HostListener("window:resize") hola(){
 
   }

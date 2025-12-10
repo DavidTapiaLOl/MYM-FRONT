@@ -1,13 +1,8 @@
 import { Injectable, TemplateRef, ViewChild, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Method, ProviderService } from './provider.service';
-import { firstValueFrom } from 'rxjs';
 import { SnackTypes, SnackBarChart } from '../components/snackbar/snackbar.component';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmationComponent } from '../components/confirmation/confirmation.component';
 import { DomSanitizer } from '@angular/platform-browser';
-/* import jsPDF from 'jspdf';
- *//* import html2canvas from 'html2canvas'; */
+
 
 @Injectable({
    providedIn: 'root'
@@ -26,24 +21,7 @@ export class MasterService {
 
 
    save_pdf(id: string, name: string) {
-      /* const element = document.getElementById(id);
-      const doc = new jsPDF('p', 'pt', 'a4');
-
-      html2canvas(element!).then((canvas: any) => {
-         const img = canvas.toDataURL('image/PNG');
-         const bufferX = 15;
-         const bufferY = 15;
-         const imgProps = (doc as any).getImageProperties(img);
-         const imgWidth = 520;
-         const imgHeight = (canvas.height * imgWidth) / canvas.width
-         const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX;
-         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-         doc.addImage(img, 'PNG', bufferX, bufferY, imgWidth, imgHeight, undefined, 'FAST');
-         return doc;
-      }).then((docResult) => {
-         docResult.save(name + '.pdf');
-      }); */
+     
    }
 
 

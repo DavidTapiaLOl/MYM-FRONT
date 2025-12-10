@@ -13,7 +13,6 @@ export declare type Chart = 'pie' | 'funnel' | 'bar' | 'column';
 export class ChartsService {
    primary = (tw.theme?.extend?.colors as any)?.['primary'];
    gap = 40;
-   // colors = this.colors_array();
 
    set_chart(type: Chart, root: am5.Root, id: string, data: any[]) {
       root = am5.Root.new(id);
@@ -44,39 +43,5 @@ export class ChartsService {
          series.appear(1000, 100);
       }
    }
-/*
-   colors_array() {
-      let rgb: any = this.hex_to_rgb(this.primary);
-      let arr: any = Object.values(rgb);
-      let max: any = Math.max(...arr);
-      let max_key: any = Object.keys(rgb).find((key: any) => rgb[key] === max)?.toString();
-      let min: any = Math.min(...arr);
-      let min_key: any = Object.keys(rgb).find((key: any) => rgb[key] === min)?.toString();
 
-      let array: any = [
-         am5.color('rgb(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ')'),
-      ];
-      while (max >= this.gap) {
-         max -= this.gap;
-         let nv = { ...rgb, [max_key]: max };
-         array.push(am5.color('rgb(' + nv.r + ',' + nv.g + ',' + nv.b + ')'));
-      }
-      while (min <= 255) {
-         min += this.gap
-         let nv = { ...rgb, [min_key]: min, [max_key]: max };
-         array.push(am5.color('rgb(' + nv.r + ',' + nv.g + ',' + nv.b + ')'));
-      }
-      return array;
-   }
-
-   hex_to_rgb(hex: string) {
-      let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(
-         hex
-      ) as RegExpExecArray;
-      return {
-         r: parseInt(result[1], 16),
-         g: parseInt(result[2], 16),
-         b: parseInt(result[3], 16),
-      };
-   } */
 }
